@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//src/Sm2Sm3=UTF-8
+encoding//src/Sm2Sm3/SM2EngineExtend.java=GBK
+encoding//src/Sm2Sm3/SM2KeyPair.java=GBK
+encoding//src/Sm2Sm3/Sm2Util.java=GBK
+encoding//src/Sm2Sm3/Util.java=UTF-8
+encoding//src/Test=GBK
+encoding//src/Test/EncryptAndDecryptTest.java=GBK

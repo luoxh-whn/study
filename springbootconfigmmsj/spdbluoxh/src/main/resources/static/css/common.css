@@ -1,0 +1,8 @@
+.row{
+    margin:10px 0px;
+}
+
+.col{
+    display: inline-block;
+    margin:0px 5px;
+}

@@ -1,0 +1,7 @@
+-- 用户表
+CREATE TABLE `t_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) NOT NULL,
+  `user_pwd` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+);

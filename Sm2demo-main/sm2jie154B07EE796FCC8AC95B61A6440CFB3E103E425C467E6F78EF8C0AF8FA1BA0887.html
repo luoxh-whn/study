@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SM2</title>
+    <script src="./lib/crypto-js.js"></script>
+    <script src="./sm2.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>SM2</h1>
+    <div class="toolbar">
+        <input type="text" value="04E8B115F324706C8644AD4CE8E22A536FCAAF42DDC9D8460A867A9E2FAF2C82BDEA71C2E274A8FC4B609759173B286A5DAC4663BAD156517597715ACDCA0E90D5E8D126A205B16520E690E92F5694B4FF650EDEC4A0047852219EF7E800EBE2B190070711EDB1E0A00A5D97A97168AB16C310F29280BEAB7F92C5CCF9" placeholder="请输入当前要加密的文本" id="encode-text" />
+        <button onclick="generateCipher()">生成 20 条密文</button>
+        <button onclick="clearCipher()">清空密文</button>
+    </div>
+
+    <ul id="cipher-items" style="font-size: 14px;">
+    </ul>
+
+    <script>
+        var privateHex ="54B07EE796FCC8AC95B61A6440CFB3E103E425C467E6F78EF8C0AF8FA1BA0887";
+        var keyCollection = [];
+        var $cipherItems = $('#cipher-items');
+        var $msg = $('#encode-text');
+        
+        function generateCipher() {
+            var item = '';
+            var msg = $msg.val();
+
+            for (var i = 0, len = 20; i < len; i++) {
+                var encryptData = sm2Decrypt(msg, privateHex, 0);
+
+                keyCollection.push(encryptData);
+                item += `<li class="cipher-items-item">{SM2}${encryptData}</li>`
+            }
+
+            $cipherItems.html($cipherItems.html() + item);
+        }
+
+        function clearCipher() {
+            keyCollection = [];
+            $cipherItems.html();
+        }
+    </script>
+</body>
+
+</html>

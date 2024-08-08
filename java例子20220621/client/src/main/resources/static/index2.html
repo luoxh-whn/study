@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<script type="text/javascript" src="js/sockjs.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="js/stomp.js"></script>
+<script type="text/javascript" src="js/base64.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>webSocket</title>
+<!--  <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/antd/3.23.6/antd.min.css">-->
+<!--  <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>-->
+<!--  <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>-->
+<!--  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>-->
+  <style type="text/css">
+    #bodyDiv {
+      margin-left: 30px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div id="bodyDiv">
+  <div>
+    <h3>用户ID</h3>
+    <input id="loginUserId" type="text">
+    <button id="connect">连接</button>
+    <button id="disconnect" disabled="disabled">断开</button>
+  </div>
+  <div>
+    <h3>广播形式</h3>
+    <button id="broadcastButton">发送</button><input id="broadcastText" type="text">
+    <label>广播消息：</label><input id="broadcastMsg" type="text" disabled="disabled">
+  </div>
+  <div>
+    <h3>订阅形式</h3>
+    <label>订阅消息：</label><input id="subscribeMsg" type="text" disabled="disabled">
+  </div>
+  <div>
+    <h3>给用户发消息</h3>
+    <button id="userButton">发送</button><input id="userText" type="text">
+    <label>用户消息：</label><input id="userMsg" type="text" disabled="disabled">
+  </div>
+  <div>
+    <h3>无APP</h3>
+    <button id="appButton">发送</button><input id="appText" type="text">
+    <label>前端消息：</label><input id="appMsg" type="text" disabled="disabled">
+  </div>
+</div>
+
+</body>
+<script>
+  var stomp = null;
+  $("#connect").click(function () {
+    var url = "http://localhost:9091/ws"
+    var socket = new SockJS(url);
+    stomp = Stomp.over(socket);
+    //连接
+    let loginUserId = $("#loginUserId").val();
+    let connectHeader = {
+      "userId": loginUserId
+    }
+    stomp.connect(connectHeader, function () {
+      //订阅广播
+      stomp.subscribe("/topic/broadcast", function (res) {
+        console.log(res)
+        console.log(res.body)
+        $("#broadcastMsg").val(res.body);
+      });
+      //订阅，一般只有订阅的时候在返回
+      stomp.subscribe("/app/subscribe/1", function (res) {
+        $("#subscribeMsg").val(res.body);
+      });
+      //用户模式
+      let userUrl = "/user/" + loginUserId + "/queue/one"
+      // let userUrl = "/user/queue/one";
+      stomp.subscribe(userUrl, function (res) {
+        console.log("user msg")
+        $("#userMsg").val(res.body);
+      });
+      //无APP
+      stomp.subscribe("/topic/app", function (res) {
+        $("#appMsg").val(res.body);
+      });
+      setConnect(true);
+    });
+  });
+
+  $("#disconnect").click(function () {
+    if (stomp != null) {
+      stomp.disconnect();
+    }
+    setConnect(false);
+  });
+  //设置按钮
+  function setConnect(connectStatus) {
+    $("#connect").attr("disabled", connectStatus);
+    $("#disconnect").attr("disabled", !connectStatus);
+  }
+
+  //发送广播消息
+  $("#broadcastButton").click(function () {
+    stomp.send("/app/broadcast", {}, JSON.stringify({"body":$("#broadcastText").val()}))
+  });
+
+  //发送用户消息
+  $("#userButton").click(function () {
+    let loginUserId = $("#userText").val();
+    let sendUrl = "/app/one/" + loginUserId;
+    stomp.send(sendUrl, {}, JSON.stringify({"body":$("#userText").val()}))
+  });
+
+  //发送web消息
+  $("#appButton").click(function () {
+    stomp.send("/topic/app", {}, JSON.stringify({"body":$("#appText").val()}))
+  });
+</script>
+</html>

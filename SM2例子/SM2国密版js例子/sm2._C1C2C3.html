@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SM2-TEST</title>
+    <script src="crypto-js.js"></script>
+    <script src="sm2.js"></script>
+    <script>
+    function encrypt() {
+        //公钥，16进制格式，由后端生成
+//public_keyHex压缩格式=02e429c1999bdb9b733c56879b962c5b6ec61d42f587496c7a05b010538d31900e
+//public_keyHex非压缩格式=04e429c1999bdb9b733c56879b962c5b6ec61d42f587496c7a05b010538d31900ea55bc069d8d6748a5022e3a1d20354986f5d77e084a3afc9cb6920343508e55c
+//private_keyHex=cd76af83008bf7972065fbfca5e92dd5e09410de0296baa3ace38fcee13184bd
+        // 需要加密的信息	
+        var pubkeyHex = "0265b2ab389023b3e0d3e571f8113023c13aaca0e95d5b3d0f6f035bada03c2fb3";
+		
+        var encryptData = sm2Encrypt("解密后信息:哈哈哈，20220621嘿嘿嘿123456",pubkeyHex, 0);
+        
+       console.log(encryptData);
+
+       const msg = '解密后信息:哈哈哈，嘿嘿嘿123456';
+     
+      const cipher_Mode = 0;
+      const  pubkey_Hex = "0465b2ab389023b3e0d3e571f8113023c13aaca0e95d5b3d0f6f035bada03c2fb3e523769673d4a6271727ebb768a9a5e7e1486e9dbe04effb5b774ca34d01bd36";
+     // 获取加密过后的密文
+      const result = sm2Encrypt(msg, pubkey_Hex, cipher_Mode);
+ console.log(result);
+      
+    }
+    </script>
+</head>
+<body onload="encrypt()">
+</body>
+</html>

@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SM2</title>
+    <script "text/javascript" src="./lib/crypto-js.js"></script>
+    <script "text/javascript" src="./sm2.js"></script>
+    <script "text/javascript" src="./jquery.min.js"></script>
+   <script type="text/javascript" src="./base64.js"></script>
+</head>
+
+<body>
+    <h1>SM2</h1>
+    <div class="toolbar">
+        <input type="text" value="" placeholder="请输入当前要加密的文本" id="encode-text" />
+        <input type="text" value="" placeholder="请输入私钥HEX字符串" id="privatekeyhex-text" />
+        <button id ="gencipher"  onclick="generateCipher()">生成 20 条密文</button>
+         <button id = "mode" onclick="exchagemode()">改变加密模式</button>
+        <button  id ="clearcipher" onclick="clearCipher()">清空密文</button>
+    </div>
+
+    <ul id="cipher-items" style="font-size: 14px;">
+    </ul>
+
+    <script>
+          var b = new Base64();
+        var keyCollection = [];
+        var $cipherItems = $('#cipher-items');
+        var $msg =$('#encode-text');
+        var $privateHex =$('#privatekeyhex-text');
+        $msg = b.decode($msg);
+       $privateHex =b.decode($privateHex);
+        var mode = 0;
+        ButtonFunInit();
+       function  ButtonFunInit()
+
+      {
+          
+         document.getElementById('mode').onclick = function (e){
+    	 exchagemode()
+    	}
+        document.getElementById('gencipher').onclick = function (e){
+                 generateCipher();
+    	 document.getElementById('encode-text').innerHTML = "";  
+               
+    	}
+      }
+        function generateCipher() {
+            var item = '';
+            var msg = $msg.val();
+            var privateHex = $privateHex.val();
+            for (var i = 0, len = 20; i < len; i++) {
+
+             
+                   var encryptData = sm2Decrypt(msg, privateHex, mode);
+                keyCollection.push(encryptData);
+                item += `<li class="cipher-items-item">{SM2}${encryptData}</li>`
+            }
+
+            $cipherItems.html($cipherItems.html() + item);
+        }
+
+        function clearCipher() {
+            keyCollection = [];
+            $cipherItems.html();
+        }
+       function exchagemode()
+        { 
+               if (mode==0) mode =1
+               else mode =0;
+        }
+    </script>
+</body>
+
+</html>

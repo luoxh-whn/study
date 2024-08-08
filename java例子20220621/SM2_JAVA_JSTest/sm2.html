@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SM2-TEST</title>
+    <script src="crypto-js.js"></script>
+    <script src="sm2.js"></script>
+    <script>
+    function encrypt() {
+        //公钥，16进制格式，由后端生成
+        var pubkeyHex = "04813d4d97ad31bd9d18d785f337f683233099d5abed09cb397152d50ac28cc0ba43711960e811d90453db5f5a9518d660858a8d0c57e359a8bf83427760ebcbba";
+        var encryptData = sm2Encrypt("SM2 Encryption Test", pubkeyHex, 0);
+        console.log(encryptData);
+    }
+    </script>
+</head>
+<body onload="encrypt()">
+</body>
+</html>

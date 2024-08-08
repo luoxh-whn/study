@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SM2</title>
+    <script src="./lib/crypto-js.js"></script>
+    <script src="./sm2.js"></script>
+    <script src="./jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>SM2</h1>
+    <div class="toolbar">
+        <input type="text" value="046531BDF086A9920E216BACBC1F1DAB820ADC4380A6D25248F1DD97E27B27E3E015BC77C5DC99AFC697C5677B1DB2895D667AC3FD2CD052DC053634502AB528C6ECC251D9B02A853F4FEDE54AA19A068299F52F08181F1005DB2120A799ADB117D613159EFEB4C332D254B9879498E5546F43511E2AE7B457AA1D727E25543EEA2F2433D09DDF73733F845BBC6BAB1091712FC973F5FA882F8A280CD06FD5132A784C51326B56E12C56855C855CEBA9DC30B1CEB3990F2C8197AC817958A42FDA4F431C80FC7F13BB01ABA72065D4176F64E8B34E8763CC05107F6A05B54C3A2F7CCCBCACAE5234FE82DF4E34EE6A224267E5F76BB13305118F673A470AE03A32638AEC0DB3B2B1BBB76D9511AA8C28507E980B06D1E51FAB7ED7C083ED5085D6EE9A3C88A861D078B7C7EBF1739DB51DF74D41F186BFED87567EB8AA02DCD863CD0CA6A12FA31AD2282F011BF4CB07C98BED0AA89B49D2C0742C8200ADB3C6A2218540747BA89BDD58D178B4420CAA275560FA4E404CAE29A628455938188DF8580B723CE434CA8DE24CB4014AB4EAAECF31E302" placeholder="请输入当前要加密的文本" id="encode-text" />
+        <button onclick="generateCipher()">生成 20 条密文</button>
+        <button onclick="clearCipher()">清空密文</button>
+    </div>
+
+    <ul id="cipher-items" style="font-size: 14px;">
+    </ul>
+
+    <script>
+        var privateHex ="42014518185759272333770569049351283832565139589249526155798749740881106854466";
+        var keyCollection = [];
+        var $cipherItems = $('#cipher-items');
+        var $msg = $('#encode-text');
+        
+        function generateCipher() {
+            var item = '';
+            var msg = $msg.val();
+
+            for (var i = 0, len = 20; i < len; i++) {
+                var encryptData = sm2Decrypt(msg, privateHex, 0);
+
+                keyCollection.push(encryptData);
+                item += `<li class="cipher-items-item">{SM2}${encryptData}</li>`
+            }
+
+            $cipherItems.html($cipherItems.html() + item);
+        }
+
+        function clearCipher() {
+            keyCollection = [];
+            $cipherItems.html();
+        }
+    </script>
+</body>
+
+</html>

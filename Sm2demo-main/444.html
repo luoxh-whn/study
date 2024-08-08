@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Target</title>
+</head>
+<body>
+    <div id="tom">
+        TOmCat
+        <div class="tabs">
+            <div class="tab-item">
+                Item1
+            </div>
+            <div class="tab-item">
+                Item2
+            </div>
+            <div class="tab-item">
+                Item3
+            </div>
+        </div>
+        </div>
+</body>
+
+<script>
+    $(document).ready(function() {
+        var objectTabItems = $('#tom .tabs div.tab-item');
+        var num = objectTabItems.length;
+        for(var i = 0; i < num; i++) {
+            let strContent = objectTabItems[i].textContent;
+                alert("this click is:" + strContent);
+        }
+    });
+</script>
+</html>

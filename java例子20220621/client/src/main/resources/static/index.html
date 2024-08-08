@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>WebSocket 发布订阅</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/antd/3.23.6/antd.min.css">
+  <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+  <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h2 id="connStatus"></h2>
+<div style="padding-left:20px;">
+  <p>/topic/subscribeTopic 订阅广播通道；/sendToServer 向服务端推送消息；/sendToTopic 将消息广播出去</p>
+  <div>
+    <label>订阅通道: </label> <input type="text" id="subscribeChannel" value=""/><br>
+    <label>推送通道: </label> <input type="text" id="sendChannel" value=""/><br>
+    <button id="subscribe" onclick="subscribe()">http订阅</button>
+    <button id="subscribeNews" onclick="subscribeNews()">websocket的subscribe订阅</button>
+    <button id="connect" onclick="connect()">连接</button>
+    <button id="disconnect"  onclick="disconnect();">断开连接</button>
+  </div>
+  <br>
+  <div>
+    <label>用户名称: </label> <input type="text" id="name"/><br>
+    <label>输入消息: </label> <input type="text" id="message"/><br>
+    <button id="send" onclick="sendMsg();">发送</button>
+    <p id="response"></p>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var stompClient = null;
+  var host="http://localhost:9091";
+
+  function connect() {
+    console.log("开始连接")
+    // 建立连接对象
+    var socket = new SockJS("http://localhost:9091/ws");
+    // 获取STOMP子协议的客户端对象
+    stompClient = Stomp.over(socket);
+    stompClient.heartbeat.outgoing = 0; //若使用STOMP 1.1 版本，默认开启了心跳检测机制（默认值都是10000ms）
+    stompClient.heartbeat.incoming = 0; //客户端不从服务端接收心跳包
+    // 定义客户端的认证信息,按需求配置
+    const token = "token123";
+    let headers = {
+      // 'Authorization': token,
+    };
+    // 向服务器发起websocket连接
+    stompClient.connect(headers, this.onConnected, this.onFailed);
+  }
+
+  function onConnected () {
+    let topic = $('#subscribeChannel').val()
+    stompClient.subscribe(topic, function (result) {
+      console.log("接收订阅消息=" + result.body);
+    }, this.onFailed);
+  }
+
+  function onFailed() {
+    console.log("Failed: ");
+  }
+
+  function disconnect() {
+    if (stompClient != null) {
+      stompClient.disconnect();
+    }
+    $('#connStatus').html('Disconnected')
+  }
+
+  /**
+   * http请求的方式触发订阅消息
+   */
+  function subscribe() {
+    $.get(host+'/subscribeTopic');
+  }
+
+  /**
+   * websocket的subscribe方式订阅消息
+   */
+  function subscribeNews() {
+    let topic= "/topic/subscribeNews"
+    stompClient.subscribe(topic, function (result) {
+      console.log("接收订阅消息=" + result.body);
+    }, this.onFailed);
+  }
+
+  function sendMsg() {
+    var message = $('#message').val();
+    console.log("发送通道：" + $('#sendChannel').val());
+    stompClient.send($('#sendChannel').val(), {}, message);
+  }
+</script>
+</body>
+</html>

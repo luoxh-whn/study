@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SM2</title>
+    <script src="./lib/crypto-js.js"></script>
+    <script src="./sm2.js"></script>
+    <script src="./jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>SM2</h1>
+    <div class="toolbar">
+        <input type="text" value="041e08e3cdb99448091381e3e937222a6f97fb809e5b50d9a280b8e291d26a2928fdacbc844a8cfb76da6ce993603d83ae728ba697168823a41678ccd63cffde486dcc43be999a988fb28729c3b449eb11deca34edf9cf00d03e283633d29d8c9e03967c6b6229fae3c0943f4558cb85a6f0570c9a35881a8e1be051dcb0826c465758a9f8d67d37875e29e425f90bfa1c12dd61d5f9549e" placeholder="请输入当前要加密的文本" id="encode-text" />
+        <button onclick="generateCipher()">生成 20 条密文</button>
+        <button onclick="clearCipher()">清空密文</button>
+    </div>
+
+    <ul id="cipher-items" style="font-size: 14px;">
+    </ul>
+
+    <script>
+        var privateHex ="41fb96c9fa5e67778cbab71e584a2cd169fc2a6ffe7242448703bf223b63d6f9";
+        var keyCollection = [];
+        var $cipherItems = $('#cipher-items');
+        var $msg = $('#encode-text');
+        
+        function generateCipher() {
+            var item = '';
+            var msg = $msg.val();
+
+            for (var i = 0, len = 20; i < len; i++) {
+                var encryptData = sm2Decrypt(msg, privateHex, 0);
+
+                keyCollection.push(encryptData);
+                item += `<li class="cipher-items-item">{SM2}${encryptData}</li>`
+            }
+
+            $cipherItems.html($cipherItems.html() + item);
+        }
+
+        function clearCipher() {
+            keyCollection = [];
+            $cipherItems.html();
+        }
+    </script>
+</body>
+
+</html>
+
+private_keyHex=41fb96c9fa5e67778cbab71e584a2cd169fc2a6ffe7242448703bf223b63d6f9
+密文:041e08e3cdb99448091381e3e937222a6f97fb809e5b50d9a280b8e291d26a2928fdacbc844a8cfb76da6ce993603d83ae728ba697168823a41678ccd63cffde486dcc43be999a988fb28729c3b449eb11deca34edf9cf00d03e283633d29d8c9e03967c6b6229fae3c0943f4558cb85a6f0570c9a35881a8e1be051dcb0826c465758a9f8d67d37875e29e425f90bfa1c12dd61d5f9549e
+解密后明文:测试加密aaaaaaaaa3333**……%！aa罗雪华123aabb
+-----------------签名与验签-----------------
+用户标识:Heartbeats
+签名信息:要签名的信息
+数字签名:5cbac4338fda8bcd562d8a52f409e633567c1c09a2895cdcc849c7d18bcbf3b0,cda5ab52816d516f3bc9d594a6707d5307ec7894d873143465640249c8caaddb
+验证签名:true
+-----------------密钥协商-----------------
+协商得B密钥:D37096CEEF1F34F1D2024CE7C45206DA
+协商得A密钥:D37096CEEF1F34F1D2024CE7C45206DA
+B->A 密钥确认成功
+A->B 密钥确认成功

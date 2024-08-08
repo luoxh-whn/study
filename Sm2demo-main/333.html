@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Target</title>
+</head>
+<body>
+    <div id="tom">
+        TOmCat
+        </div>
+</body>
+
+<script>
+    $(document).ready(function() {
+        $('#tom').click(function(e) {
+            var strContent = $(e.currentTarget).text(); // 这里要用.text()获取文本内容
+
+            alert(strContent); // output: TOmCat
+        });
+    });
+</script>
+</html>

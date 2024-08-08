@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zipking.cloud.springbootmybatis.persistance.mapper.WaExtdataTestMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zipking.cloud.springbootmybatis.persistance.entity.WaExtdataTest">
+        <id column="id" property="id" />
+        <result column="busiorg" property="busiorg" />
+        <result column="busiorg_name" property="busiorgName" />
+        <result column="dept_id" property="deptId" />
+        <result column="dept_name" property="deptName" />
+        <result column="staff_code" property="staffCode" />
+        <result column="staff_name" property="staffName" />
+        <result column="period" property="period" />
+        <result column="period_type" property="periodType" />
+        <result column="jjgz" property="jjgz" />
+        <result column="jjdj" property="jjdj" />
+        <result column="code1" property="code1" />
+        <result column="code2" property="code2" />
+        <result column="bbb1" property="bbb1" />
+        <result column="ddd1" property="ddd1" />
+        <result column="ddd2" property="ddd2" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, busiorg, busiorg_name, dept_id, dept_name, staff_code, staff_name, period, period_type, jjgz, jjdj, code1, code2, bbb1, ddd1, ddd2
+    </sql>
+
+</mapper>

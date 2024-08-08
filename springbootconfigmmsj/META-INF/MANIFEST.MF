@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Created-By: Apache Maven 3.8.4
+Built-By: HP
+Build-Jdk: 18.0.1.1
+Implementation-Title: luoxh
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: spdb
+Implementation-URL: https://spring.io/projects/spring-boot/springbootmyb
+ atis
+Main-Class: org.springframework.boot.loader.JarLauncher
+Start-Class: com.wode.App
+Spring-Boot-Version: 2.3.4.RELEASE
+Spring-Boot-Classes: BOOT-INF/classes/
+Spring-Boot-Lib: BOOT-INF/lib/
+Spring-Boot-Classpath-Index: BOOT-INF/classpath.idx
+

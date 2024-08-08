@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="powerx.io.dao.UserDao">
+    <resultMap type="User" id="UserResult">
+        <!-- 数据库字段和实体类属性映射关系，名称一样的字段可以无需映射。column对应数据库的实际字段，property对应实体类的属性 -->
+        <result column="USER_NAME" property="userName" />
+        <result column="USER_PWD" property="userPwd" />
+    </resultMap>
+    
+    <select id="findByName" parameterType="String" resultMap="UserResult">
+        SELECT USER_NAME,USER_PWD FROM USER WHERE USER_NAME=#{userName} 
+    </select>
+    
+    <insert id="insertUser" parameterType="powerx.io.model.User">
+    INSERT INTO USER(USER_NAME,USER_PWD) VALUES(#{userName},#{userPwd})
+  </insert>
+    
+</mapper>
